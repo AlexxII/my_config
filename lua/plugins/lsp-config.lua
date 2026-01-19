@@ -5,28 +5,33 @@ return {
 			require("mason").setup()
 		end,
 	},
+
 	{
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "ts_ls", "rust_analyzer" },
+				ensure_installed = { "lua_ls", "ts_ls", "rust_analyzer", "tailwindcss", "svelte" },
 			})
 		end,
 	},
+
 	{
 		"neovim/nvim-lspconfig",
 		lazy = false,
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			local lspconfig = require("lspconfig")
 
+			------------------------------------------------------------------
 			-- Lua
-			lspconfig.lua_ls.setup({
+			------------------------------------------------------------------
+			vim.lsp.config.lua_ls = {
 				capabilities = capabilities,
-			})
+			}
 
-			-- Typescript \ Javascript
-			lspconfig.ts_ls.setup({
+			------------------------------------------------------------------
+			-- TypeScript / JavaScript
+			------------------------------------------------------------------
+			vim.lsp.config.ts_ls = {
 				capabilities = capabilities,
 				init_options = {
 					preferences = {
@@ -36,66 +41,51 @@ return {
 					},
 				},
 				filetypes = { "typescript", "javascript" },
-			})
+			}
 
+			------------------------------------------------------------------
 			-- Tailwind CSS
-			lspconfig.tailwindcss.setup({
+			------------------------------------------------------------------
+			vim.lsp.config.tailwindcss = {
 				capabilities = capabilities,
-			})
+			}
 
+			------------------------------------------------------------------
 			-- Svelte
-			lspconfig.svelte.setup({
+			------------------------------------------------------------------
+			vim.lsp.config.svelte = {
 				capabilities = capabilities,
-				on_attach = function(client, bufnr)
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						pattern = { "*.svelte" },
-						callback = function()
-							vim.lsp.buf.format({ async = true })
-						end,
-					})
-					-- Добавляем автоимпорт через code actions
-					vim.api.nvim_buf_set_keymap(
-						bufnr,
-						"n",
-						"<leader>ai",
-						"<cmd>lua vim.lsp.buf.code_action({ context = { only = {'source.addMissingImports'} }, apply = true })<CR>",
-						{ noremap = true, silent = true }
-					)
-				end,
-			})
-			-- Rust с автоимпортом
-			lspconfig.rust_analyzer.setup({
+			}
+
+			------------------------------------------------------------------
+			-- Rust
+			------------------------------------------------------------------
+			vim.lsp.config.rust_analyzer = {
 				capabilities = capabilities,
 				settings = {
 					["rust-analyzer"] = {
 						imports = {
-							granularity = {
-								group = "module",
-							},
+							granularity = { group = "module" },
 							prefix = "self",
 						},
 						cargo = {
-							buildScripts = {
-								enable = true,
-							},
+							buildScripts = { enable = true },
 						},
-						procMacro = {
-							enable = true,
-						},
+						procMacro = { enable = true },
 						completion = {
-							autoimport = {
-								enable = true,
-							},
+							autoimport = { enable = true },
 						},
 					},
 				},
-			})
+			}
 
-			-- keymaps
-			vim.keymap.set("n", "H", vim.lsp.buf.hover, {})
-			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
-			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
-			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
+			------------------------------------------------------------------
+			-- Global LSP keymaps
+			------------------------------------------------------------------
+			vim.keymap.set("n", "H", vim.lsp.buf.hover)
+			vim.keymap.set("n", "gd", vim.lsp.buf.definition)
+			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action)
+			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
 		end,
 	},
 }

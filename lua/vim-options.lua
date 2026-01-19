@@ -2,7 +2,7 @@ vim.cmd("set expandtab")
 vim.cmd("set tabstop=2")
 vim.cmd("set softtabstop=2")
 vim.cmd("set shiftwidth=2")
-vim.cmd("set rnu")
+vim.cmd("set nu rnu")
 vim.g.mapleader = " "
 
 vim.opt.colorcolumn = "120"
@@ -12,7 +12,6 @@ vim.opt.signcolumn = "yes"
 
 -- буфер обмена
 vim.opt.clipboard = "unnamedplus"
-
 
 vim.keymap.set('i', 'jk', '<esc>', {})
 
