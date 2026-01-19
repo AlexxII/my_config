@@ -19,20 +19,17 @@ return {
 		"neovim/nvim-lspconfig",
 		lazy = false,
 		config = function()
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
 			------------------------------------------------------------------
 			-- Lua
 			------------------------------------------------------------------
 			vim.lsp.config.lua_ls = {
-				capabilities = capabilities,
-			}
+        cmd = {"lua-language-server"}
+      }
 
 			------------------------------------------------------------------
 			-- TypeScript / JavaScript
 			------------------------------------------------------------------
 			vim.lsp.config.ts_ls = {
-				capabilities = capabilities,
 				init_options = {
 					preferences = {
 						importModuleSpecifierPreference = "relative",
@@ -46,22 +43,17 @@ return {
 			------------------------------------------------------------------
 			-- Tailwind CSS
 			------------------------------------------------------------------
-			vim.lsp.config.tailwindcss = {
-				capabilities = capabilities,
-			}
+			vim.lsp.config.tailwindcss = {}
 
 			------------------------------------------------------------------
 			-- Svelte
 			------------------------------------------------------------------
-			vim.lsp.config.svelte = {
-				capabilities = capabilities,
-			}
+			vim.lsp.config.svelte = {}
 
 			------------------------------------------------------------------
 			-- Rust
 			------------------------------------------------------------------
 			vim.lsp.config.rust_analyzer = {
-				capabilities = capabilities,
 				settings = {
 					["rust-analyzer"] = {
 						imports = {
@@ -78,6 +70,14 @@ return {
 					},
 				},
 			}
+
+			vim.lsp.enable({
+				"lua_ls",
+				"ts_ls",
+				"tailwindcss",
+				"svelte",
+				"rust_analyzer",
+			})
 
 			------------------------------------------------------------------
 			-- Global LSP keymaps
