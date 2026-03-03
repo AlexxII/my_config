@@ -1,91 +1,106 @@
 return {
-	{
-		"williamboman/mason.nvim",
-		config = function()
-			require("mason").setup()
-		end,
-	},
+  {
+    "williamboman/mason.nvim",
+    config = function()
+      require("mason").setup()
+    end,
+  },
 
-	{
-		"williamboman/mason-lspconfig.nvim",
-		config = function()
-			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "ts_ls", "rust_analyzer", "tailwindcss", "svelte" },
-			})
-		end,
-	},
+  {
+    "williamboman/mason-lspconfig.nvim",
+    config = function()
+      require("mason-lspconfig").setup({
+        ensure_installed = { "lua_ls", "ts_ls", "rust_analyzer", "tailwindcss", "svelte" },
+      })
+    end,
+  },
 
-	{
-		"neovim/nvim-lspconfig",
-		lazy = false,
-		config = function()
-			------------------------------------------------------------------
-			-- Lua
-			------------------------------------------------------------------
-			vim.lsp.config.lua_ls = {
-        cmd = {"lua-language-server"}
+  {
+    "neovim/nvim-lspconfig",
+    lazy = false,
+    config = function()
+      ------------------------------------------------------------------
+      -- Lua
+      ------------------------------------------------------------------
+      vim.lsp.config.lua_ls = {
+        cmd = { "lua-language-server" }
       }
 
-			------------------------------------------------------------------
-			-- TypeScript / JavaScript
-			------------------------------------------------------------------
-			vim.lsp.config.ts_ls = {
-				init_options = {
-					preferences = {
-						importModuleSpecifierPreference = "relative",
-						includeAutomaticOptionalChainCompletions = true,
-						includeCompletionsForModuleExports = true,
-					},
-				},
-				filetypes = { "typescript", "javascript" },
-			}
+      ------------------------------------------------------------------
+      -- JSON
+      ------------------------------------------------------------------
+      vim.lsp.config.jsonls = {}
 
-			------------------------------------------------------------------
-			-- Tailwind CSS
-			------------------------------------------------------------------
-			vim.lsp.config.tailwindcss = {}
+      ------------------------------------------------------------------
+      -- TypeScript / JavaScript
+      ------------------------------------------------------------------
+      vim.lsp.config.ts_ls = {
+        init_options = {
+          preferences = {
+            importModuleSpecifierPreference = "relative",
+            includeAutomaticOptionalChainCompletions = true,
+            includeCompletionsForModuleExports = true,
+          },
+        },
+        filetypes = { "typescript", "javascript" },
+      }
 
-			------------------------------------------------------------------
-			-- Svelte
-			------------------------------------------------------------------
-			vim.lsp.config.svelte = {}
+      ------------------------------------------------------------------
+      -- Tailwind CSS
+      ------------------------------------------------------------------
+      vim.lsp.config.tailwindcss = {}
 
-			------------------------------------------------------------------
-			-- Rust
-			------------------------------------------------------------------
-			vim.lsp.config.rust_analyzer = {
-				settings = {
-					["rust-analyzer"] = {
-						imports = {
-							granularity = { group = "module" },
-							prefix = "self",
-						},
-						cargo = {
-							buildScripts = { enable = true },
-						},
-						procMacro = { enable = true },
-						completion = {
-							autoimport = { enable = true },
-						},
-					},
-				},
-			}
+      ------------------------------------------------------------------
+      -- Svelte
+      ------------------------------------------------------------------
+      vim.lsp.config.svelte = {}
 
-			vim.lsp.enable({
-				"lua_ls",
-				"ts_ls",
-				"tailwindcss",
-				"svelte",
-				"rust_analyzer",
-			})
+      ------------------------------------------------------------------
+      -- HTML
+      ------------------------------------------------------------------
+      vim.lsp.config.html = {}
 
-			------------------------------------------------------------------
-			-- Global LSP keymaps
-			------------------------------------------------------------------
-			vim.keymap.set("n", "H", vim.lsp.buf.hover)
-			vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action)
-			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
-		end,
-	},
+      ------------------------------------------------------------------
+      -- CSS
+      ------------------------------------------------------------------
+      vim.lsp.config.cssls = {}
+
+      ------------------------------------------------------------------
+      -- Rust
+      ------------------------------------------------------------------
+      vim.lsp.config.rust_analyzer = {
+        settings = {
+          ["rust-analyzer"] = {
+            imports = {
+              granularity = { group = "module" },
+              prefix = "self",
+            },
+            cargo = {
+              buildScripts = { enable = true },
+            },
+            procMacro = { enable = true },
+            completion = {
+              autoimport = { enable = true },
+            },
+          },
+        },
+      }
+
+      vim.lsp.enable({
+        "lua_ls",
+        "ts_ls",
+        "tailwindcss",
+        "svelte",
+        "rust_analyzer",
+      })
+
+      ------------------------------------------------------------------
+      -- Global LSP keymaps
+      ------------------------------------------------------------------
+      vim.keymap.set("n", "H", vim.lsp.buf.hover)
+      vim.keymap.set("n", "gd", vim.lsp.buf.definition)
+      vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action)
+      vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
+    end,
+  },
 }
